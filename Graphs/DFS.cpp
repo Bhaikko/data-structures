@@ -1,35 +1,20 @@
 #include <iostream>
-#include <queue>
 
-// bfs for graph having disjoint graphs
-void bfs(int** graph, int vertices, int start, bool* isVisited)
+void dfs(int** graph, int vertices, int currentVertex, bool* isVisited)
 {
-    std::queue<int>* pending = new std::queue<int>();
-    pending->push(start);  
-    isVisited[start] = true; 
+    std::cout << currentVertex << " ";
+    isVisited[currentVertex] = true;
 
-    while(!pending->empty()) {
-
-        int currentVertex = pending->front();
-        pending->pop();
-
-        std::cout << currentVertex << " ";
-
-        for(int i = 0; i < vertices; i++) {
-            if (graph[currentVertex][i] == 1 && !isVisited[i]) {
-                isVisited[i] = true;
-                pending->push(i);
-            }
+    for (int i = 0; i < vertices; i++) {
+        if (graph[currentVertex][i] && !isVisited[i]) {
+            isVisited[i] = true;
+            dfs(graph, vertices, i, isVisited);
         }
     }
-
-    delete pending;
-
 }
 
-void bfs(int** graph, int vertices) 
+void dfs(int** graph, int vertices)
 {
-
     bool* isVisited = new bool[vertices];
 
     for(int i = 0; i < vertices; i++) {
@@ -38,7 +23,7 @@ void bfs(int** graph, int vertices)
 
     for (int i = 0; i < vertices; i++) {
         if (!isVisited[i]) {
-            bfs(graph, vertices, i, isVisited);
+            dfs(graph, vertices, i, isVisited);
         }
     }
 }
@@ -60,7 +45,7 @@ int main()
         graph[e2][e1] = 1;
     }
 
-    bfs(graph, vertices);
+    dfs(graph, vertices);
 
     /*
         SAMPLE INPUT
