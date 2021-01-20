@@ -2,7 +2,7 @@
 
 #define RANGE 255
 
-void countSort(int arr[], int size)
+void CountSort(int arr[], int size)
 {
     int output[size];
 
@@ -32,10 +32,10 @@ void countSort(int arr[], int size)
 
 int main()
 {
-    int arr[] = {12, 11, 13, 5, 6, 7}; 
-	int size = sizeof(arr)/sizeof(arr[0]); 
+    int arr[] = { 12, 11, 13, 5, 6, 7 }; 
+	int size = sizeof(arr) / sizeof(arr[0]); 
 
-	countSort(arr, size); 
+	CountSort(arr, size); 
 
 
     for (int i = 0; i < size; i++) {

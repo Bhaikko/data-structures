@@ -1,6 +1,6 @@
 #include <iostream>
 
-int getMax(int arr[], int size) 
+int GetMax(int arr[], int size) 
 {
     int max = arr[0];
     for (int i = 0; i < size; i++) {
@@ -12,7 +12,7 @@ int getMax(int arr[], int size)
     return max;
 }
 
-void countSort(int arr[], int size, int exp)
+void CountSort(int arr[], int size, int exp)
 {
     int output[size];
     int count[10] = {0};
@@ -35,23 +35,22 @@ void countSort(int arr[], int size, int exp)
     }
 }
 
-void radixsort(int arr[], int size)
+void Radixsort(int arr[], int size)
 {
-    int max = getMax(arr, size);
+    int max = GetMax(arr, size);
 
     for (int exp = 1; max / exp > 0; exp *= 10) {
-        countSort(arr, size, exp);
+        CountSort(arr, size, exp);
     }
 }
 
 
 int main()
 {
-    int arr[] = {12, 11, 13, 5, 6, 7}; 
-	int size = sizeof(arr)/sizeof(arr[0]); 
+    int arr[] = { 12, 11, 13, 5, 6, 7 }; 
+	int size = sizeof(arr) / sizeof(arr[0]); 
 
-	radixsort(arr, size); 
-
+	Radixsort(arr, size); 
 
     for (int i = 0; i < size; i++) {
         std::cout << arr[i] << " ";
