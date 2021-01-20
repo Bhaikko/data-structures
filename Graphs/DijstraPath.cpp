@@ -9,56 +9,50 @@ struct Neighbor {
 };
 
 struct Vertex {
-    vector<Neighbor> neighbors;
+    vector<Neighbor*> neighbors;
     int source;
     int distance;
 };
 
 struct CompareDistance {
-    bool operator()(Vertex const& a, Vertex const& b) {
-        return a.distance >= b.distance;
+    bool operator()(Vertex* a, Vertex* b) {
+        return a->distance >= b->distance;
     }
 };
 
-void Dijsktra(Vertex graph[], int source, int n, bool isVisited[]) 
+void Dijsktra(Vertex* graph[], int source, int n, bool isVisited[]) 
 {
-    graph[source].distance = 0;
+    graph[source]->distance = 0;
 
-    priority_queue<Vertex, vector<Vertex>, CompareDistance> pending;
+    priority_queue<Vertex*, vector<Vertex*>, CompareDistance> pending;
     pending.push(graph[source]);
 
     // for (int i = 1; i <= n; i++) {
     while (!pending.empty()) {
-        Vertex minVertex = pending.top();    
+        Vertex* minVertex = pending.top();    
         pending.pop();
 
-        isVisited[minVertex.source] = true;
+        isVisited[minVertex->source] = true;
 
-        cout << minVertex.source << endl;
-
-        for (int i = 0; i < minVertex.neighbors.size(); i++) {
+        for (int i = 0; i < minVertex->neighbors.size(); i++) {
             
-            Neighbor neighbor = minVertex.neighbors[i];
-            // cout << neighbor.dest << " ";
-            Vertex neighborVertex = graph[neighbor.dest];
+            Neighbor* neighbor = minVertex->neighbors[i];
+            Vertex* neighborVertex = graph[neighbor->dest];
 
-            int distance = minVertex.distance + neighbor.weight;
-            printf("%i %i %i\n", minVertex.distance, neighbor.weight, distance);
-            if (distance < neighborVertex.distance) {
-                graph[neighbor.dest].distance = distance;
+            int distance = minVertex->distance + neighbor->weight;
+            if (distance < neighborVertex->distance) {
+                graph[neighbor->dest]->distance = distance;
             }
 
-            cout << neighborVertex.source << endl;
-            if (!isVisited[neighborVertex.source]) {
+            if (!isVisited[neighborVertex->source]) {
                 pending.push(neighborVertex);
             }
         }
-
-        cout << endl;
     }
 
     for (int i = 1; i <= n; i++) {
-        cout << graph[i].distance << " ";
+        // cout << graph[i]->distance << " ";
+        printf("%i ", graph[i]->distance);
     }
 
 }
@@ -68,10 +62,12 @@ void solution()
     int n, m;
     cin >> n >> m;
 
-    Vertex graph[n + 1];
+    Vertex* graph[n + 1];
 
     for (int i = 1; i <= n; i++) {
-        graph[i].source = i;
+        graph[i] = new Vertex();
+        graph[i]->source = i;
+        graph[i]->distance = INT_MAX;
     }
 
     for (int i = 0; i < m; i++) {
@@ -79,13 +75,12 @@ void solution()
 
         cin >> a >> b >> c;
 
-        Neighbor neighbor;
-        neighbor.dest = b;
-        neighbor.weight = c;
+        Neighbor* neighbor = new Neighbor();
+        neighbor->dest = b;
+        neighbor->weight = c;
 
         // graph[a].source = a;
-        graph[a].neighbors.push_back(neighbor);
-        graph[a].distance = INT_MAX;
+        graph[a]->neighbors.push_back(neighbor);
     }
 
     bool isVisited[n + 1];
