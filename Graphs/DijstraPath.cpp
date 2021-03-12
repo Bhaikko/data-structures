@@ -5,13 +5,13 @@ typedef long long ll;
 
 struct Neighbor {
     int dest;
-    int weight;
+    ll weight;
 };
 
 struct Vertex {
     vector<Neighbor*> neighbors;
     int source;
-    int distance;
+    ll distance;
 };
 
 struct CompareDistance {
@@ -27,32 +27,32 @@ void Dijsktra(Vertex* graph[], int source, int n, bool isVisited[])
     priority_queue<Vertex*, vector<Vertex*>, CompareDistance> pending;
     pending.push(graph[source]);
 
-    // for (int i = 1; i <= n; i++) {
     while (!pending.empty()) {
         Vertex* minVertex = pending.top();    
         pending.pop();
 
+        if (isVisited[minVertex->source]) {
+            continue;
+        }
+
         isVisited[minVertex->source] = true;
 
-        for (int i = 0; i < minVertex->neighbors.size(); i++) {
+        for (unsigned int i = 0; i < minVertex->neighbors.size(); i++) {
             
             Neighbor* neighbor = minVertex->neighbors[i];
             Vertex* neighborVertex = graph[neighbor->dest];
 
-            int distance = minVertex->distance + neighbor->weight;
+            ll distance = minVertex->distance + neighbor->weight;
+
             if (distance < neighborVertex->distance) {
                 graph[neighbor->dest]->distance = distance;
-            }
-
-            if (!isVisited[neighborVertex->source]) {
                 pending.push(neighborVertex);
             }
         }
     }
 
     for (int i = 1; i <= n; i++) {
-        // cout << graph[i]->distance << " ";
-        printf("%i ", graph[i]->distance);
+        cout << graph[i]->distance << " ";
     }
 
 }
@@ -67,11 +67,12 @@ void solution()
     for (int i = 1; i <= n; i++) {
         graph[i] = new Vertex();
         graph[i]->source = i;
-        graph[i]->distance = INT_MAX;
+        graph[i]->distance = LLONG_MAX;
     }
 
     for (int i = 0; i < m; i++) {
-        int a, b, c;
+        int a, b;
+        ll c;
 
         cin >> a >> b >> c;
 
@@ -79,7 +80,6 @@ void solution()
         neighbor->dest = b;
         neighbor->weight = c;
 
-        // graph[a].source = a;
         graph[a]->neighbors.push_back(neighbor);
     }
 
